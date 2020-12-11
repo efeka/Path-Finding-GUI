@@ -1,11 +1,12 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 public class Cell extends GameObject {
 	
 	public static final int EMPTY = 0;
 	public static final int BARRIER = 1;
-	public static final int ENTRANCE = 2;
+	public static final int START = 2;
 	public static final int EXIT = 3;
 	
 	private int size;
@@ -47,18 +48,27 @@ public class Cell extends GameObject {
 		switch (type) {
 			case EMPTY:
 				g.setColor(Color.white);
+				g.fillRect(x, y, size, size);
 				break;
 			case BARRIER:
 				g.setColor(Color.black);
+				g.fillRect(x, y, size, size);
 				break;
-			case ENTRANCE:
-				g.setColor(Color.blue);
+			case START:
+				g.setColor(new Color(100, 100, 200));
+				g.fillRect(x, y, size, size);
+				g.setColor(Color.white);
+				g.setFont(new Font("", Font.BOLD, 20));
+				g.drawString("S", x + size / 4 - 2, y + size - 3);
 				break;
 			case EXIT:
-				g.setColor(Color.green);
+				g.setColor(new Color(100, 200, 100));
+				g.fillRect(x, y, size, size);
+				g.setColor(Color.white);
+				g.setFont(new Font("", Font.BOLD, 20));
+				g.drawString("E", x + size / 4 - 2, y + size - 3);
 				break;
 		}
-		g.fillRect(x, y, size, size);
 	}
 	
 	public int getType() {

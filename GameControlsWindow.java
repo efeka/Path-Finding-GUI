@@ -24,7 +24,7 @@ public class GameControlsWindow {
 
 	JLabel lblSelectType, lblSize, lblRowCount, lblColumnCount;
 	ButtonGroup group;
-	JRadioButton rbBarrier, rbEntrance, rbExit;
+	JRadioButton rbBarrier, rbStart, rbExit;
 	JComboBox rows, columns;
 
 
@@ -53,10 +53,10 @@ public class GameControlsWindow {
 		rbBarrier.setVisible(true);
 		rbBarrier.setSelected(true);
 
-		rbEntrance = new JRadioButton("Entrance   ");
-		rbEntrance.setHorizontalTextPosition(SwingConstants.LEFT);
-		rbEntrance.setBounds(30, 80, 90, 20);
-		rbEntrance.setVisible(true);
+		rbStart = new JRadioButton("Start           ");
+		rbStart.setHorizontalTextPosition(SwingConstants.LEFT);
+		rbStart.setBounds(30, 80, 90, 20);
+		rbStart.setVisible(true);
 
 		rbExit = new JRadioButton("Exit             ");
 		rbExit.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -68,9 +68,9 @@ public class GameControlsWindow {
 				selected_type = Cell.BARRIER;
 			}
 		});
-		rbEntrance.addMouseListener(new MouseAdapter() {
+		rbStart.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				selected_type = Cell.ENTRANCE;
+				selected_type = Cell.START;
 			}
 		});
 		rbExit.addMouseListener(new MouseAdapter() {
@@ -79,11 +79,11 @@ public class GameControlsWindow {
 			}
 		});
 		group.add(rbBarrier);
-		group.add(rbEntrance);
+		group.add(rbStart);
 		group.add(rbExit);
 
 		frame.add(rbBarrier);
-		frame.add(rbEntrance);
+		frame.add(rbStart);
 		frame.add(rbExit);
 		
 		lblSize = new JLabel("Change Labyrinth Size");
