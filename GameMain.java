@@ -48,14 +48,14 @@ public class GameMain extends Canvas implements Runnable {
 
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
-				grid[i][j] = new Cell((borderSize + cellSize) * i + borderSize, (borderSize + cellSize) + (borderSize + cellSize) * (j - 1) + borderSize, cellSize, Cell.EMPTY, mouse);
+				grid[i][j] = new Cell((borderSize + cellSize) * i + borderSize, (borderSize + cellSize) + (borderSize + cellSize) * (j - 1) + borderSize, i, j, cellSize, Cell.EMPTY, mouse);
 	}
 	
-	public static void randomLabyrinth() {
+	public static void randomLabyrinth(int percentage) {
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
 				grid[i][j].setType(Cell.EMPTY);
-		int count = rows * cols / 3;
+		int count = rows * cols * percentage / 100;
 		while (count-- != 0) {
 			int row = (int)(Math.random() * cols);
 			int col = (int)(Math.random() * rows);

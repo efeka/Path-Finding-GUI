@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -16,16 +17,16 @@ import javax.swing.SwingConstants;
 public class GameControlsWindow {
 
 	public JFrame frame;
-	private int width = 350, height = 250;
+	private int width = 350, height = 320;
 
-	private JButton apply, random, solve;
 
 	public static int selected_type = Cell.BARRIER;
 
-	JLabel lblSelectType, lblSize, lblRowCount, lblColumnCount;
+	private JButton apply, random, solve, clear;
+	JLabel lblSelectType, lblSize, lblRowCount, lblColumnCount, lblSelectDensity, lblSelectAlgorithm;
 	ButtonGroup group;
 	JRadioButton rbBarrier, rbStart, rbExit;
-	JComboBox rows, columns;
+	JComboBox rows, columns, density, algorithm;
 
 
 	public GameControlsWindow(int mainX, int mainY, int mainWidth, int mainHeight) {
@@ -134,19 +135,76 @@ public class GameControlsWindow {
 		frame.add(horiz);
 	
 		random = new JButton("Generate randomly");
-		random.setBounds(10, 170, 150, 25);
+		random.setBounds(10, 200, 150, 25);
 		random.setVisible(true);
 		random.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				GameMain.randomLabyrinth();
+				String dens = density.getSelectedItem().toString();
+				int percentage = Integer.parseInt(dens.substring(0, dens.length() - 1));
+				GameMain.randomLabyrinth(percentage);
 			}
 		});
 		frame.add(random);
 		
 		solve = new JButton("Find solution");
-		solve.setBounds(170, 170, 150, 25);
+		solve.setBounds(170, 200, 150, 25);
 		solve.setVisible(true);
+		solve.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				//first clear highlighted cells
+				for (int i = 0; i < GameMain.grid.length; i++) {
+					for (int j = 0; j < GameMain.grid[i].length; j++) {
+						if (GameMain.grid[i][j].getType() == Cell.HIGHLIGHT)
+							GameMain.grid[i][j].setType(Cell.EMPTY);
+					}
+				}
+				
+				Dijkstra dij = new Dijkstra();
+				boolean pathFound = dij.getPathFound();
+				if (!pathFound)
+					JOptionPane.showMessageDialog(null, "Could not find a valid path.", "Warning!", JOptionPane.WARNING_MESSAGE);
+			}
+		});
 		frame.add(solve);
+		
+		lblSelectDensity = new JLabel("Density:");
+		lblSelectDensity.setVisible(true);
+		lblSelectDensity.setFont(new Font("", Font.BOLD, 13));
+		lblSelectDensity.setBounds(25, 170, 150, 20);
+		frame.add(lblSelectDensity);
+		
+		density = new JComboBox();
+		for (int i = 0; i <= 100; i += 10)
+			density.addItem(i + "%");
+		density.setSelectedIndex(3);
+		density.setBounds(83, 171, 50, 20);
+		density.setVisible(true);
+		frame.add(density);
+		
+		lblSelectAlgorithm = new JLabel("Algorithm:");
+		lblSelectAlgorithm.setVisible(true);
+		lblSelectAlgorithm.setFont(new Font("", Font.BOLD, 13));
+		lblSelectAlgorithm.setBounds(170, 170, 150, 20);
+		frame.add(lblSelectAlgorithm);
+		
+		algorithm = new JComboBox();
+		algorithm.addItem("Dijkstra");
+		algorithm.addItem("A Star");
+		algorithm.setBounds(239, 171, 80, 20);
+		algorithm.setVisible(true);
+		frame.add(algorithm);
+		
+		clear = new JButton("Clear Screen");
+		clear.setBounds((width - 150) / 2, 240, 130, 25);
+		clear.setVisible(true);
+		clear.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				for (int i = 0; i < GameMain.grid.length; i++) 
+					for (int j = 0; j < GameMain.grid[i].length; j++) 
+						GameMain.grid[i][j].setType(Cell.EMPTY);
+			}
+		});
+		frame.add(clear);
 		
 		frame.setVisible(true);
 	}

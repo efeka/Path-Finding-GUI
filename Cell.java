@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class Cell extends GameObject {
 	
@@ -8,6 +9,7 @@ public class Cell extends GameObject {
 	public static final int BARRIER = 1;
 	public static final int START = 2;
 	public static final int EXIT = 3;
+	public static final int HIGHLIGHT = 4; 
 	
 	private int size;
 	private int type;
@@ -15,13 +17,16 @@ public class Cell extends GameObject {
 	private MouseInput mouse;
 	private int mouseX, mouseY;
 	
+	public static Cell start;
+	
 	private long pressCooldown = 0L;
 
-	public Cell(int x, int y, int size, int type, MouseInput mouse) {
+	public Cell(int x, int y, int i, int j, int size, int type, MouseInput mouse) {
 		super(x, y);
 		this.size = size;
 		this.type = type;
 		this.mouse = mouse;
+		start = null;
 	}
 
 	public void tick() {
@@ -34,12 +39,32 @@ public class Cell extends GameObject {
 
 				if (x <= mouseX && x + size >= mouseX) {
 					if (y <= mouseY && y + size >= mouseY) {
-						if (type == EMPTY)
+						clearHighlights();
+						if (type == EMPTY || type == HIGHLIGHT)
 							type = GameControlsWindow.selected_type;
 						else
 							type = EMPTY;
+						if (GameControlsWindow.selected_type == START) {
+							type = START;
+							if (start == null)
+								start = this;
+							else {
+								start.setType(EMPTY);
+								type = START;
+								start = this;
+							}
+						}
 					}
 				}
+			}
+		}
+	}
+	
+	private void clearHighlights() {
+		for (int i = 0; i < GameMain.grid.length; i++) {
+			for (int j = 0; j < GameMain.grid[i].length; j++) {
+				if (GameMain.grid[i][j].getType() == HIGHLIGHT)
+					GameMain.grid[i][j].setType(EMPTY);
 			}
 		}
 	}
@@ -67,6 +92,10 @@ public class Cell extends GameObject {
 				g.setColor(Color.white);
 				g.setFont(new Font("", Font.BOLD, 20));
 				g.drawString("E", x + size / 4 - 2, y + size - 3);
+				break;
+			case HIGHLIGHT:
+				g.setColor(new Color(0, 255, 0, 150));
+				g.fillRect(x, y, size, size);
 				break;
 		}
 	}
