@@ -6,8 +6,6 @@ import java.util.PriorityQueue;
 //used this site to learn about Dijkstra's algorithm
 public class Dijkstra {
 
-	boolean pathFound;
-
 	public class Node {
 		int i, j, type;
 		int distance;
@@ -29,6 +27,9 @@ public class Dijkstra {
 			return neigh;
 		}
 	}
+	
+	boolean pathFound;
+	public long timeTaken;
 
 	public Dijkstra() {
 		pathFound = false;
@@ -88,12 +89,13 @@ public class Dijkstra {
 			}
 		};
 		
-		//---This is where we run the actual algorithm--- 
+		long time1 = System.currentTimeMillis(); 
 		//try to find solutions for each of the exits
 		ArrayList<Node> solutions = new ArrayList<Node>();
 		for (Node exit : exits) 
 			solutions.add(solve(start, exit, distanceComp));
-		//---This is where we run the actual algorithm---
+		long time2 = System.currentTimeMillis();
+		timeTaken = time2 - time1;
 		
 		ArrayList<Node> solutionsAux = new ArrayList<Node>();
 		for (int i = 0; i < solutions.size(); i++) {

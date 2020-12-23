@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 public class GameControlsWindow {
 
 	public JFrame frame;
-	private int width = 350, height = 320;
+	private final int width = 350, height = 320;
 
 
 	public static int selected_type = Cell.BARRIER;
@@ -27,7 +27,6 @@ public class GameControlsWindow {
 	ButtonGroup group;
 	JRadioButton rbBarrier, rbStart, rbExit;
 	JComboBox rows, columns, density, algorithm;
-
 
 	public GameControlsWindow(int mainX, int mainY, int mainWidth, int mainHeight) {
 		frame = new JFrame();
@@ -159,10 +158,24 @@ public class GameControlsWindow {
 					}
 				}
 				
-				Dijkstra dij = new Dijkstra();
-				boolean pathFound = dij.getPathFound();
-				if (!pathFound)
-					JOptionPane.showMessageDialog(null, "Could not find a valid path.", "Warning!", JOptionPane.WARNING_MESSAGE);
+				if (algorithm.getSelectedIndex() == 0) {
+					Dijkstra dij = new Dijkstra();
+					boolean pathFound = dij.getPathFound();
+					if (!pathFound)
+						JOptionPane.showMessageDialog(null, "Could not find a valid path.", "Warning!", JOptionPane.WARNING_MESSAGE);
+				}
+				else if (algorithm.getSelectedIndex() == 1) {
+					AStar a = new AStar();
+					boolean pathFound = a.getPathFound();
+					if (!pathFound)
+						JOptionPane.showMessageDialog(null, "Could not find a valid path.", "Warning!", JOptionPane.WARNING_MESSAGE);
+				}
+				else if (algorithm.getSelectedIndex() == 2) {
+					BFS bfs = new BFS();
+					boolean pathFound = bfs.getPathFound();
+					if (!pathFound)
+						JOptionPane.showMessageDialog(null, "Could not find a valid path.", "Warning!", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		frame.add(solve);
@@ -177,7 +190,7 @@ public class GameControlsWindow {
 		for (int i = 0; i <= 100; i += 10)
 			density.addItem(i + "%");
 		density.setSelectedIndex(3);
-		density.setBounds(83, 171, 50, 20);
+		density.setBounds(83, 171, 57, 20);
 		density.setVisible(true);
 		frame.add(density);
 		
@@ -190,6 +203,7 @@ public class GameControlsWindow {
 		algorithm = new JComboBox();
 		algorithm.addItem("Dijkstra");
 		algorithm.addItem("A Star");
+		algorithm.addItem("BFS");
 		algorithm.setBounds(239, 171, 80, 20);
 		algorithm.setVisible(true);
 		frame.add(algorithm);

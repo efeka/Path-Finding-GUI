@@ -49,8 +49,9 @@ public class GameMain extends Canvas implements Runnable {
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
 				grid[i][j] = new Cell((borderSize + cellSize) * i + borderSize, (borderSize + cellSize) + (borderSize + cellSize) * (j - 1) + borderSize, i, j, cellSize, Cell.EMPTY, mouse);
+		
 	}
-	
+
 	public static void randomLabyrinth(int percentage) {
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
@@ -73,16 +74,12 @@ public class GameMain extends Canvas implements Runnable {
 			for (int i = 0; i < grid.length; i++)
 				for (int j = 0; j < grid[i].length; j++)
 					grid[i][j].tick();
-		} catch(NullPointerException e) {
-			//this only throws an exception when threads get desynchronized
-			//e.g when the user changes row/column numbers
-			//so this exception does not matter
-		}
+		} catch(Exception ignored) {}
 	}
 
 	//method for drawing on the screen
 	private void render() {
-		BufferStrategy bs=this.getBufferStrategy();
+		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) {
 			this.createBufferStrategy(3);
 			return;
@@ -101,20 +98,14 @@ public class GameMain extends Canvas implements Runnable {
 					if (grid[i][j] != null) 
 						grid[i][j].render(g);
 
-		} catch(NullPointerException e) {
-			//this only throws an exception when threads get desynchronized
-			//e.g when the user changes row/column numbers
-			//so this exception does not matter
-		}
-		
+		} catch(Exception ignored) {}
+
 		//render grid
 		g.setColor(new Color(200, 200, 200));
 		for (int i = 0; i < height; i += (borderSize + cellSize)) 
 			g.fillRect(0, i, width, borderSize);
 		for (int i = 0; i < width; i += (borderSize + cellSize)) 
 			g.fillRect(i, 0, borderSize, height);
-
-
 
 		//---draw end---	
 		g.dispose();
