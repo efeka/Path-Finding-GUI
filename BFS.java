@@ -106,12 +106,9 @@ public class BFS {
 				minPath = paths[i];
 		}
 		
-		if (minPath == null)
-			pathFound = false;
-		else
-			pathFound = true;
-		if (pathFound)
-			highlightSolution(minPath);
+		if (minPath != null)
+			if (pathFound)
+				highlightSolution(minPath);
 		
 	}
 	
@@ -165,6 +162,7 @@ public class BFS {
 			visited.add(exit);
 			exit = exit.parent;
 		}
+		pathFound = true;
 		return list;
 	}
 

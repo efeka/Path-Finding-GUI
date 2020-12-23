@@ -28,7 +28,7 @@ public class AStar {
 			return findG(start) + findHeuristicDistance(exit);
 		}
 		
-		//diagonal movement costs 1.5, the rest costs 1
+		//diagonal movement costs 1.5, other moves cost 1
 		public double findG(Node node) {
 			int diff1 = (int)(Math.abs(i - node.i));
 			int diff2 = (int)(Math.abs(j - node.j));

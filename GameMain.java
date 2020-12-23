@@ -5,11 +5,7 @@ import java.awt.image.BufferStrategy;
 
 @SuppressWarnings("serial")
 public class GameMain extends Canvas implements Runnable {
-	/*
-	 * TODO: Kullanici giris ve cikis noktalarini secebilecek
-	 * TODO: Kullanici istedigi yere engel koyup silebilecek
-	 * TODO: Kullanici rastgele labirent olusturtabilecek
-	 */
+
 	private Thread thread;
 	public static boolean running = false;
 
@@ -49,7 +45,7 @@ public class GameMain extends Canvas implements Runnable {
 		for (int i = 0; i < grid.length; i++)
 			for (int j = 0; j < grid[i].length; j++)
 				grid[i][j] = new Cell((borderSize + cellSize) * i + borderSize, (borderSize + cellSize) + (borderSize + cellSize) * (j - 1) + borderSize, i, j, cellSize, Cell.EMPTY, mouse);
-		
+
 	}
 
 	public static void randomLabyrinth(int percentage) {
